@@ -79,7 +79,7 @@ func ProveSignatureWebAuthn(key, newKey254 *big.Int, signature []byte, signature
 	}
 	clientDataJSONSuffix := webAuthnAuth.ClientDataJSON[len(ClientDataJSONPrefix+encoded):]
 	paddedSuffix, blockCount := PaddedClientDataSuffix(clientDataJSONSuffix)
-	clc := &proving.CircuitLoaderClient{Loader: circuitLoader}
+	clc := proving.NewCircuitLoaderClient(circuitLoader)
 	cc, err := clc.Load(circuits.WebauthnAccountMetadata, 0)
 	if err != nil {
 		return nil, err

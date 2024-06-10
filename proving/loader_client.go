@@ -20,12 +20,16 @@ type CircuitLoader interface {
 }
 
 type CircuitLoaderClient struct {
-	Loader CircuitLoader
+	loader CircuitLoader
+}
+
+func NewCircuitLoaderClient(loader CircuitLoader) *CircuitLoaderClient {
+	return &CircuitLoaderClient{loader: loader}
 }
 
 func (clc *CircuitLoaderClient) Load(cm *circuits.Metadata, txCount int) (*CompiledCircuit, error) {
 	result := make(chan LoadCircuitResult, 1)
-	clc.Loader.Load(cm.Filename(txCount), cm.Field, result)
+	clc.loader.Load(cm.Filename(txCount), cm.Field, result)
 	r := <-result
 	if r.Err != nil {
 		return nil, r.Err
@@ -59,7 +63,7 @@ func (clc *CircuitLoaderClient) loadAndProve(cm *circuits.Metadata, txCount int,
 
 	result := make(chan ProveResult, 1)
 	log.Info("Proving", "filename", cm.Filename(txCount-1))
-	clc.Loader.LoadAndProve(cm.Filename(txCount-1), cm.Field, cm.Outer, wit, result)
+	clc.loader.LoadAndProve(cm.Filename(txCount-1), cm.Field, cm.Outer, wit, result)
 	log.Info("Awaiting result", "filename", cm.Filename(txCount-1))
 	r := <-result
 	log.Info("Proof generation complete", "filename", cm.Filename(txCount-1), "error", r.Err)

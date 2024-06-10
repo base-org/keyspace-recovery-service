@@ -38,7 +38,7 @@ func ProveSignatureSecp256k1(key, newKey254 *big.Int, signature []byte, signatur
 		return nil, err
 	}
 
-	clc := &proving.CircuitLoaderClient{Loader: circuitLoader}
+	clc := proving.NewCircuitLoaderClient(circuitLoader)
 	cc, err := clc.Load(circuits.Secp256k1AccountMetadata, 0)
 	if err != nil {
 		return nil, err
