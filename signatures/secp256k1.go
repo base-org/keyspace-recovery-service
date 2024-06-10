@@ -84,7 +84,7 @@ func ecdsaPublicKeyToData(publicKey *ecdsa.PublicKey) []byte {
 }
 
 func splitSignature(signature []byte) (r, s *big.Int, err error) {
-	if len(signature) != 64 {
+	if len(signature) != 65 {
 		return nil, nil, errors.New("invalid signature length")
 	}
 	r = new(big.Int).SetBytes(signature[:32])

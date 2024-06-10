@@ -20,7 +20,7 @@ import (
 	cbw6761 "github.com/consensys/gnark/constraint/bw6-761"
 )
 
-func Load(store storage.Storage, vkHash string, field *big.Int, onlyVk bool) (constraint.ConstraintSystem, plonk.ProvingKey, plonk.VerifyingKey, error) {
+func Load(store storage.Storage, filename string, field *big.Int, onlyVk bool) (constraint.ConstraintSystem, plonk.ProvingKey, plonk.VerifyingKey, error) {
 	var vk plonk.VerifyingKey
 	var pk plonk.ProvingKey
 	var ccs constraint.ConstraintSystem
@@ -55,8 +55,8 @@ func Load(store storage.Storage, vkHash string, field *big.Int, onlyVk bool) (co
 	}
 
 	for _, t := range types {
-		log.Info(fmt.Sprintf("Retrieving circuit %s", t.suffix), "vkHash", vkHash)
-		key := fmt.Sprintf("%s.%s", vkHash, t.suffix)
+		log.Info(fmt.Sprintf("Retrieving circuit %s", t.suffix), "filename", filename)
+		key := fmt.Sprintf("%s.%s", filename, t.suffix)
 		reader, err := store.Reader(key)
 		if err != nil {
 			return nil, nil, nil, err
