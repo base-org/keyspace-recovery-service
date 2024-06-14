@@ -17,6 +17,8 @@ type LockingCircuitLoader struct {
 	locks  map[string]*sync.Mutex
 }
 
+var _ CircuitLoader = (*LockingCircuitLoader)(nil)
+
 /**
  * Creates a new CircuitStorageManager to manage loading compiled circuits asychronously.
  */
